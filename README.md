@@ -32,7 +32,7 @@ Run manually from Docker Hub:
 podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0Iabs/aws-ec2-exporter
 ```
 
-Build a docker image:
+Build a container image:
 ```
 podman build -t <image-name> .
 podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 <image-name>
