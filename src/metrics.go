@@ -13,6 +13,12 @@ func AddMetrics() map[string]*prometheus.GaugeVec {
 		Name:      "total_vcpus",
 		Help:      "Total virtual CPUs capacity provided by an instance-type",
 	}, []string{"region", "instance_type"})
+  gaugeVecs["clockSpeed"] = prometheus.NewGaugeVec(
+	prometheus.GaugeOpts{
+		Namespace: namespace,
+		Name:      "vcpus_clockspeed",
+		Help:      "Clock speed(Ghz) of vCPUs provided by an instance-type",
+	}, []string{"region", "instance_type"})
   gaugeVecs["totalMem"] = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: namespace,
