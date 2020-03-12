@@ -4,7 +4,7 @@ import (
   "net/http"
 
   log "github.com/Sirupsen/logrus"
-  c "github.com/0x0I/aws_ec2_exporter/config"
+  c "github.com/0x0I/aws_ec2_exporter/src/config"
 
   "github.com/prometheus/client_golang/prometheus"
   "github.com/prometheus/client_golang/prometheus/promhttp"

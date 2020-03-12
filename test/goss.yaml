@@ -1,0 +1,15 @@
+file:
+  /usr/bin/aws_ec2_exporter:
+    exists: true
+    mode: "0755"
+    owner: root
+    group: root
+    filetype: file
+process:
+  aws_ec2_exporte:
+    running: true
+    skip: false
+port:
+  tcp6:9686:
+    listening: true
+    skip: false

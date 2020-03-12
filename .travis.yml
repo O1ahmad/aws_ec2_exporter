@@ -1,9 +1,11 @@
 language: go
-
-sudo: false
-
 go: 1.14.x
+services:
+  - docker
+
+before_script:
+  - sudo curl -fsSL https://goss.rocks/install | sudo sh
 
 script:
-  - cd src && go build
-  - go install
+  - docker build --file Containerfile --tag aws-ec2-exporter:testing .
+  - GOSS_FILES_PATH=test dgoss run aws-ec2-exporter:testing
