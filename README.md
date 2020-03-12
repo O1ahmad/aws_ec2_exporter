@@ -39,14 +39,14 @@ podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX"
 
 ```
 aws-ec2-exporter:
-    tty: true
-    stdin_open: true
-    environment:
-      - AWS_ACCESS_KEY_ID="XXXXXXXX"
-      - AWS_SECRET_ACCESS_KEY="XXXXXXX"
-    expose:
-      - 9686:9686
-    image: 0Iabs/aws-ec2-exporter:latest
+  tty: true
+  stdin_open: true
+  environment:
+    - AWS_ACCESS_KEY_ID="XXXXXXXX"
+    - AWS_SECRET_ACCESS_KEY="XXXXXXX"
+  expose:
+    - 9686:9686
+  image: 0Iabs/aws-ec2-exporter:latest
 ```
 
 ## Metrics
