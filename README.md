@@ -1,5 +1,5 @@
-<p><img src="https://cdn.worldvectorlogo.com/logos/prometheus.svg" alt="Prometheus logo" title="prometheus" align="left" height="70" /></p>
-<p><img src="https://adamtheautomator.com/content/images/2019/07/prod-art-aws-600-width-1200.png" alt="aws logo" title="aws" align="right" height="80" /></p>
+<p><img src="https://cdn.worldvectorlogo.com/logos/prometheus.svg" alt="Prometheus logo" title="prometheus" align="left" height="60" /></p>
+<p><img src="https://adamtheautomator.com/content/images/2019/07/prod-art-aws-600-width-1200.png" alt="aws logo" title="aws" align="right" height="100" /></p>
 
 # aws_ec2_exporter
 A prometheus exporter providing metrics for AWS EC2 compute resource specifications and capacity profiling.
