@@ -12,31 +12,31 @@ func AddMetrics() map[string]*prometheus.GaugeVec {
 		Namespace: namespace,
 		Name:      "total_vcpus",
 		Help:      "Total virtual CPUs capacity provided by an instance-type",
-	}, []string{"region", "instance-type"})
+	}, []string{"region", "instance_type"})
   gaugeVecs["totalMem"] = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: namespace,
 		Name:      "total_mem",
 		Help:      "Total memory capacity(GiB) provided by an instance-type",
-	}, []string{"region", "instance-type"})
+	}, []string{"region", "instance_type"})
   gaugeVecs["totalStorage"] = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: namespace,
 		Name:      "total_disk",
 		Help:      "Total disk storage capacity(GiB) provided by an instance-type",
-	}, []string{"region", "instance-type"})
+	}, []string{"region", "instance_type"})
   gaugeVecs["ebsOnly"] = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: namespace,
 		Name:      "ebs_only",
-		Help:      "Whether an instance-type *only* supports EBS as its root device volume",
-	}, []string{"region", "instance-type"})
+		Help:      "Whether an instance_type *only* supports EBS as its root device volume",
+	}, []string{"region", "instance_type"})
   gaugeVecs["totalNet"] = prometheus.NewGaugeVec(
 	prometheus.GaugeOpts{
 		Namespace: namespace,
 		Name:      "total_net",
 		Help:      "Total network bandwidth(Gbps) capacity provided by an instance-type",
-	}, []string{"region", "instance-type"})
+	}, []string{"region", "instance_type"})
 
   // image metrics
   gaugeVecs["imageState"] = prometheus.NewGaugeVec(
