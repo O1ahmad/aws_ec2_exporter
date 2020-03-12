@@ -37,7 +37,7 @@ func main() {
       <head><title>AWS EC2 Exporter</title></head>
       <body>
       <h1>AWS EC2 Exporter</h1>
-      <p><a href=i`+ metricsPath + `">Metrics</a></p>
+      <p><a href=`+ metricsPath + `>Metrics</a></p>
       </body>
       </html>`))
   })

@@ -25,7 +25,7 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 // Collect function, called on by Prometheus Client library
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
-	log.Info("Scrape recieved, collecting metrics...")
+	log.Info("Scrape received, collecting metrics...")
 
 	e.mutex.Lock() // To protect metrics from concurrent collects.
 	defer e.mutex.Unlock()
