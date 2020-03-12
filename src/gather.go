@@ -1,6 +1,8 @@
 package main
 
 import (
+    "strings"
+    "strconv"
 	log "github.com/Sirupsen/logrus"
 
     "github.com/aws/aws-sdk-go/aws"
@@ -24,12 +26,27 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
 
 	for _, x := range result.InstanceTypes {
       log.Debugf("Data Captured", x)
-        //e.gaugeVecs["totalvCPUs"].With(prometheus.Labels{"region": x.Region, "instance-type": x.InstanceType}).Set(x.Cores)
-		//e.gaugeVecs["totalMem"].With(prometheus.Labels{"region": x.Region, "instance-type": x.InstanceType}).Set(x.Mem)
-		//e.gaugeVecs["totalStorage"].With(prometheus.Labels{"region": x.Region, "instance-type": x.InstanceType}).Set(x.Storage)
-		//e.gaugeVecs["ebsOnly"].With(prometheus.Labels{"region": x.Region, "instance-type": x.InstanceType}).Set(x.EbsOnly)
-		//e.gaugeVecs["totalNet"].With(prometheus.Labels{"region": x.Region, "instance-type": x.InstanceType}).Set(x.Net)
-	}
+        e.gaugeVecs["totalvCPUs"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(*x.VCpuInfo.DefaultVCpus))
+        e.gaugeVecs["clockSpeed"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(*x.ProcessorInfo.SustainedClockSpeedInGhz)
+		e.gaugeVecs["totalMem"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(*x.MemoryInfo.SizeInMiB))
+        var storage_size = 0
+        if *x.InstanceStorageSupported {
+          storage_size = int(*x.InstanceStorageInfo.TotalSizeInGB)
+        } else {
+          storage_size = 0
+        }
+		e.gaugeVecs["totalStorage"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(storage_size))
+        var ebs_only = 0
+        if !(*x.InstanceStorageSupported) {
+          ebs_only = 1
+        }
+		e.gaugeVecs["ebsOnly"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(ebs_only))
+        if v, err := strconv.ParseFloat(strings.SplitN(*x.NetworkInfo.NetworkPerformance, " ", 2)[0], 4); err == nil {
+		  e.gaugeVecs["totalNet"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(v)
+        } else {
+		  e.gaugeVecs["totalNet"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(-1)
+        }
+    }
 
 	return result, err
 
