@@ -5,6 +5,9 @@ import (
 
   log "github.com/Sirupsen/logrus"
   c "github.com/0x0I/aws_ec2_exporter/src/config"
+  "github.com/aws/aws-sdk-go/service/ec2"
+  "github.com/aws/aws-sdk-go/aws"
+  "github.com/aws/aws-sdk-go/aws/session"
 
   "github.com/prometheus/client_golang/prometheus"
   "github.com/prometheus/client_golang/prometheus/promhttp"
@@ -20,6 +23,8 @@ var (
   listenPort  = c.GetEnv("LISTEN_PORT", ":9686")     // Port on which to expose metrics
   logLevel    = c.GetEnv("LOG_LEVEL", "info")
   region      = c.GetEnv("REGION", "us-east-1")
+
+  ec2svc      = ec2.New(session.New(&aws.Config{Region: aws.String(region),})) // EC2 API session/service client
 )
 
 func main() {

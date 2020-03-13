@@ -2,13 +2,19 @@ FROM golang:alpine AS builder
 
 MAINTAINER 0xO1
 
-ADD . /go/src/github.com/0x0I/aws_ec2_exporter/
+RUN apk --update add ca-certificates git
 
-WORKDIR /go/src/github.com/0x0I/aws_ec2_exporter/src
+ADD https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 /usr/bin/dep
+RUN chmod +x /usr/bin/dep
 
-RUN apk --update add ca-certificates git \
- && GOPATH=/go go get \
- && GOPATH=/go go build -o /bin/aws_ec2_exporter
+WORKDIR /go/src/github.com/0x0I/aws_ec2_exporter
+
+COPY Gopkg.toml Gopkg.lock ./
+RUN dep ensure --vendor-only
+
+ADD src/ /go/src/github.com/0x0I/aws_ec2_exporter/
+
+RUN GOPATH=/go go get && GOPATH=/go go build -o /bin/aws_ec2_exporter
 
 FROM alpine:latest
 

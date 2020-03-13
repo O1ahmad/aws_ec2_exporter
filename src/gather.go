@@ -5,8 +5,6 @@ import (
     "regexp"
 	log "github.com/Sirupsen/logrus"
 
-    "github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -14,7 +12,6 @@ import (
 
 func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeInstanceTypesOutput, error) {
 
-    ec2svc := ec2.New(session.New(&aws.Config{Region: aws.String(region),}))
 	params := &ec2.DescribeInstanceTypesInput{
 	}
 	result, err := ec2svc.DescribeInstanceTypes(params)
@@ -63,7 +60,6 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
 
 func (e *Exporter) gatherImageMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeImagesOutput, error) {
 
-    ec2svc := ec2.New(session.New(&aws.Config{Region: aws.String(region),}))
 	params := &ec2.DescribeImagesInput{
 	}
 	result, err := ec2svc.DescribeImages(params)
@@ -83,7 +79,6 @@ func (e *Exporter) gatherImageMetrics(ch chan<- prometheus.Metric) (*ec2.Describ
 
 func (e *Exporter) gatherRegionMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeRegionsOutput, error) {
 
-    ec2svc := ec2.New(session.New(&aws.Config{Region: aws.String(region),}))
 	params := &ec2.DescribeRegionsInput{
 	}
 	result, err := ec2svc.DescribeRegions(params)
