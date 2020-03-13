@@ -32,10 +32,13 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
 	e.resetMetrics() // Clean starting point
 	e.gatherInstanceMetrics(ch)
-	e.gatherImageMetrics(ch)
-	e.gatherRegionMetrics(ch)
+	//e.gatherImageMetrics(ch)
+	//e.gatherRegionMetrics(ch)
 
 	for _, m := range e.gaugeVecs {
+		m.Collect(ch)
+	}
+	for _, m := range e.counterVecs {
 		m.Collect(ch)
 	}
 
