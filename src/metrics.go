@@ -2,9 +2,10 @@ package main
 
 import "github.com/prometheus/client_golang/prometheus"
 
-func AddMetrics() map[string]*prometheus.GaugeVec {
+func AddMetrics() (map[string]*prometheus.GaugeVec, map[string]*prometheus.CounterVec) {
 
   gaugeVecs := make(map[string]*prometheus.GaugeVec)
+  counterVecs := make(map[string]*prometheus.CounterVec)
 
   // instance metrics
   gaugeVecs["totalvCPUs"] = prometheus.NewGaugeVec(
@@ -45,27 +46,21 @@ func AddMetrics() map[string]*prometheus.GaugeVec {
 	}, []string{"region", "instance_type"})
 
   // image metrics
-  gaugeVecs["imageState"] = prometheus.NewGaugeVec(
-	prometheus.GaugeOpts{
+  counterVecs["total_images"] = prometheus.NewCounterVec(
+	prometheus.CounterOpts{
 		Namespace: namespace,
-		Name:      "image_state",
-		Help:      "The current state of the AMI (available | pending | failed)",
-	}, []string{"name", "id", "hypervisor"})
-  gaugeVecs["imageSize"] = prometheus.NewGaugeVec(
-	prometheus.GaugeOpts{
-		Namespace: namespace,
-		Name:      "image_size",
-		Help:      "The total size of the image(MiB)",
-	}, []string{"name", "id", "hypervisor"})
+		Name:      "total_images",
+		Help:      "Total count of publically available images",
+	}, []string{"id", "architecture", "hypervisor", "image_type", "root_device_type", "state", "virtualization_type"})
 
   // region metrics
-  gaugeVecs["regionStatus"] = prometheus.NewGaugeVec(
-	prometheus.GaugeOpts{
+  counterVecs["total_regions"] = prometheus.NewCounterVec(
+	prometheus.CounterOpts{
 		Namespace: namespace,
-		Name:      "region_status",
-		Help:      "The region opt-in status (opt-in-not-required | opted-in | not-opted-in)",
-	}, []string{"name", "endpoint"})
+		Name:      "total_regions",
+		Help:      "Total count of publically accessible EC2 regions",
+	}, []string{"name", "endpoint", "optin_status"})
 
-  return gaugeVecs
+  return gaugeVecs, counterVecs
 
 }

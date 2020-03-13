@@ -3,55 +3,83 @@ package main
 import (
     "strconv"
     "regexp"
+
 	log "github.com/Sirupsen/logrus"
-
 	"github.com/aws/aws-sdk-go/service/ec2"
-
 	"github.com/prometheus/client_golang/prometheus"
 )
 
 func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeInstanceTypesOutput, error) {
 
-	params := &ec2.DescribeInstanceTypesInput{
-	}
-	result, err := ec2svc.DescribeInstanceTypes(params)
-	if err != nil {
-	  log.Fatal(err.Error())
-	}
-
-    log.Debug("Data Captured:", result)
-
-	for _, x := range result.InstanceTypes {
-      log.Debug("Data Captured", x)
-      // total number of vCPUs
-      e.gaugeVecs["totalvCPUs"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(*x.VCpuInfo.DefaultVCpus))
-
-      // vCPU maximum supported clockspeed
-      if x.ProcessorInfo.SustainedClockSpeedInGhz != nil {
-           e.gaugeVecs["clockSpeed"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(*x.ProcessorInfo.SustainedClockSpeedInGhz) } else {
-           e.gaugeVecs["clockSpeed"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(-1)
+    var token *string; var result *ec2.DescribeInstanceTypesOutput; var err error
+    // Describe instance types while token indicates additional paged records
+    for ok := true; ok; ok = (token != nil) {
+      params := &ec2.DescribeInstanceTypesInput{
+        NextToken: token,
       }
-      // total main memory
-      e.gaugeVecs["totalMem"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(*x.MemoryInfo.SizeInMiB))
-
-      // total disk storage
-      var storage_size = 0
-      if *x.InstanceStorageSupported {
-        storage_size = int(*x.InstanceStorageInfo.TotalSizeInGB)
+      result, err := ec2svc.DescribeInstanceTypes(params)
+      if err != nil {
+        log.Fatal(err.Error())
       }
-      e.gaugeVecs["totalStorage"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(storage_size))
 
-      // EBS storage ONLY
-      var ebs_only = 0
-      if !(*x.InstanceStorageSupported) {
-        ebs_only = 1
+      log.Debug("DescribeInstanceTypes <RESULT>:", result)
+
+      for _, x := range result.InstanceTypes {
+        log.Debug("Data <instance>:", x)
+        // total number of vCPUs
+        e.gaugeVecs["totalvCPUs"].With(prometheus.Labels{
+            "region": region, 
+            "instance_type": *x.InstanceType,
+        }).Set(float64(*x.VCpuInfo.DefaultVCpus))
+
+        // vCPU maximum supported clockspeed
+        if x.ProcessorInfo.SustainedClockSpeedInGhz != nil {
+             e.gaugeVecs["clockSpeed"].With(prometheus.Labels{
+                 "region": region, 
+                 "instance_type": *x.InstanceType,
+             }).Set(*x.ProcessorInfo.SustainedClockSpeedInGhz) } else {
+             e.gaugeVecs["clockSpeed"].With(prometheus.Labels{
+                 "region": region,
+                 "instance_type": *x.InstanceType,
+             }).Set(-1)
+        }
+        // total main memory
+        e.gaugeVecs["totalMem"].With(prometheus.Labels{
+            "region": region,
+            "instance_type": *x.InstanceType,
+        }).Set(float64(*x.MemoryInfo.SizeInMiB))
+
+        // total disk storage
+        var storage_size = 0
+        if *x.InstanceStorageSupported {
+          storage_size = int(*x.InstanceStorageInfo.TotalSizeInGB)
+        }
+        e.gaugeVecs["totalStorage"].With(prometheus.Labels{
+            "region": region,
+            "instance_type": *x.InstanceType,
+        }).Set(float64(storage_size))
+
+        // EBS storage ONLY
+        var ebs_only = 0
+        if !(*x.InstanceStorageSupported) {
+          ebs_only = 1
+        }
+        e.gaugeVecs["ebsOnly"].With(prometheus.Labels{
+            "region": region,
+            "instance_type": *x.InstanceType,
+        }).Set(float64(ebs_only))
+
+        // network bandwith
+        re := regexp.MustCompile(`\d[\d,]*[\.]?[\d{2}]*`)
+        net_speed, _ := strconv.ParseFloat(re.FindString(*x.NetworkInfo.NetworkPerformance), 4)
+        e.gaugeVecs["totalNet"].With(prometheus.Labels{
+            "region": region,
+            "instance_type": *x.InstanceType,
+        }).Set(net_speed)
       }
-      e.gaugeVecs["ebsOnly"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(float64(ebs_only))
 
-      // network bandwith
-      re := regexp.MustCompile(`\d[\d,]*[\.]?[\d{2}]*`)
-      net_speed, _ := strconv.ParseFloat(re.FindString(*x.NetworkInfo.NetworkPerformance), 4)
-      e.gaugeVecs["totalNet"].With(prometheus.Labels{"region": region, "instance_type": *x.InstanceType}).Set(net_speed)
+      // Assign next token for continued processing
+      token = result.NextToken
     }
 
 	return result, err
@@ -67,10 +95,19 @@ func (e *Exporter) gatherImageMetrics(ch chan<- prometheus.Metric) (*ec2.Describ
 	  log.Fatal(err.Error())
 	}
 
+    log.Debug("DescribeImages <RESULT>:", result)
+
 	for _, x := range result.Images {
-      log.Debug("Data Captured:", x)
-		//e.gaugeVecs["imageState"].With(prometheus.Labels{"name": x.Name, "id": x.Id, "hypervisor": x.Hypervisor}).Set(x.State)
-		//e.gaugeVecs["imageSize"].With(prometheus.Labels{"name": x.Name, "id": x.Id, "hypervisor": x.hypervisor}).Set(x.Size)
+      log.Debug("Data <image>:", x)
+      e.counterVecs["total_images"].With(prometheus.Labels{
+          "id": *x.ImageId,
+          "architecture": *x.Architecture,
+          "hypervisor": *x.Hypervisor,
+          "image_type": *x.ImageType,
+          "root_device_type": *x.RootDeviceType,
+          "state": *x.State,
+          "virtualization_type": *x.VirtualizationType,
+      }).Inc()
 	}
 
 	return result, err
@@ -86,11 +123,15 @@ func (e *Exporter) gatherRegionMetrics(ch chan<- prometheus.Metric) (*ec2.Descri
 	  log.Fatal(err.Error())
 	}
 
-    log.Debug("Data Captured:", result)
+    log.Debug("DescribeRegions <RESULT>:", result)
 
 	for _, x := range result.Regions {
-      log.Debug("Data Captured", x)
-      //e.gaugeVecs["regionStatus"].With(prometheus.Labels{"name": x.Name, "endpoint": x.endpoint}).Set(x.Status)
+      log.Debug("Data <region>:", x)
+      e.counterVecs["total_regions"].With(prometheus.Labels{
+          "name": *x.RegionName,
+          "endpoint": *x.Endpoint,
+          "optin_status": *x.OptInStatus,
+      }).Inc()
 	}
 
 	return result, err
