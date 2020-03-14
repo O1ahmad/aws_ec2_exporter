@@ -33,9 +33,20 @@ Run manually from Docker Hub:
 podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0Iabs/aws-ec2-exporter
 ```
 
+Scrape non-default AWS EC2 region and increase logging level:
+```
+podman run -d \
+           --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
+           --env AWS_SECRET_ACCESS_KEY="XXXXXXX" \
+           --env REGION=us-west-2 \
+           --env LOG_LEVEL=debug \
+           --publish 9686:9686 \
+           0Iabs/aws-ec2-exporter
+```
+
 Build a container image:
 ```
-podman build -t <image-name> .
+podman build --file build/Containerfile --tag <image-name> .
 podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 <image-name>
 ```
 
