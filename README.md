@@ -23,6 +23,7 @@ The application can be run in a number of ways, the main consumption is the Dock
 **Optional**
 * `METRICS_PATH`           - Path under which to expose metrics. Defaults to `/metrics`
 * `LISTEN_PORT`            - Port on which to expose metrics. Defaults to 9174
+* `REGION`                 - EC2 region to scrape. Defaults to `us-east-1`
 * `LOG_LEVEL`              - Set the logging level. Defaults to `Info`
 
 ## Install and deploy
