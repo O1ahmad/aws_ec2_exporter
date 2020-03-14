@@ -1,8 +1,9 @@
 package main
 
 import (
-    "strconv"
     "regexp"
+    "strconv"
+    "time"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -27,26 +28,51 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
       for _, x := range result.InstanceTypes {
         log.Debug("Data <instance>:", x)
         // total number of vCPUs
+
+        var hypervisor = "unknown"
+        if x.Hypervisor != nil {
+            hypervisor = *x.Hypervisor
+        }
         e.gaugeVecs["totalvCPUs"].With(prometheus.Labels{
-            "region": region, 
+            "region": region,
             "instance_type": *x.InstanceType,
+            "hypervisor": hypervisor,
+            "bare_metal": strconv.FormatBool(*x.BareMetal),
+            "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+            "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+            "hibernation": strconv.FormatBool(*x.HibernationSupported),
         }).Set(float64(*x.VCpuInfo.DefaultVCpus))
 
         // vCPU maximum supported clockspeed
         if x.ProcessorInfo.SustainedClockSpeedInGhz != nil {
              e.gaugeVecs["clockSpeed"].With(prometheus.Labels{
-                 "region": region, 
-                 "instance_type": *x.InstanceType,
+                "region": region,
+                "instance_type": *x.InstanceType,
+                "hypervisor": hypervisor,
+                "bare_metal": strconv.FormatBool(*x.BareMetal),
+                "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+                "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+                "hibernation": strconv.FormatBool(*x.HibernationSupported),
              }).Set(*x.ProcessorInfo.SustainedClockSpeedInGhz) } else {
              e.gaugeVecs["clockSpeed"].With(prometheus.Labels{
-                 "region": region,
-                 "instance_type": *x.InstanceType,
+                "region": region,
+                "instance_type": *x.InstanceType,
+                "hypervisor": hypervisor,
+                "bare_metal": strconv.FormatBool(*x.BareMetal),
+                "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+                "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+                "hibernation": strconv.FormatBool(*x.HibernationSupported),
              }).Set(-1)
         }
         // total main memory
         e.gaugeVecs["totalMem"].With(prometheus.Labels{
             "region": region,
             "instance_type": *x.InstanceType,
+            "hypervisor": hypervisor,
+            "bare_metal": strconv.FormatBool(*x.BareMetal),
+            "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+            "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+            "hibernation": strconv.FormatBool(*x.HibernationSupported),
         }).Set(float64(*x.MemoryInfo.SizeInMiB))
 
         // total disk storage
@@ -57,6 +83,11 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
         e.gaugeVecs["totalStorage"].With(prometheus.Labels{
             "region": region,
             "instance_type": *x.InstanceType,
+            "hypervisor": hypervisor,
+            "bare_metal": strconv.FormatBool(*x.BareMetal),
+            "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+            "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+            "hibernation": strconv.FormatBool(*x.HibernationSupported),
         }).Set(float64(storage_size))
 
         // EBS storage ONLY
@@ -67,6 +98,11 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
         e.gaugeVecs["ebsOnly"].With(prometheus.Labels{
             "region": region,
             "instance_type": *x.InstanceType,
+            "hypervisor": hypervisor,
+            "bare_metal": strconv.FormatBool(*x.BareMetal),
+            "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+            "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+            "hibernation": strconv.FormatBool(*x.HibernationSupported),
         }).Set(float64(ebs_only))
 
         // network bandwith
@@ -75,6 +111,11 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
         e.gaugeVecs["totalNet"].With(prometheus.Labels{
             "region": region,
             "instance_type": *x.InstanceType,
+            "hypervisor": hypervisor,
+            "bare_metal": strconv.FormatBool(*x.BareMetal),
+            "free_tier": strconv.FormatBool(*x.FreeTierEligible),
+            "current_gen": strconv.FormatBool(*x.CurrentGeneration),
+            "hibernation": strconv.FormatBool(*x.HibernationSupported),
         }).Set(net_speed)
       }
 
@@ -133,6 +174,44 @@ func (e *Exporter) gatherRegionMetrics(ch chan<- prometheus.Metric) (*ec2.Descri
           "optin_status": *x.OptInStatus,
       }).Inc()
 	}
+
+	return result, err
+
+}
+
+func (e *Exporter) gatherSpotMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeSpotPriceHistoryOutput, error) {
+
+    var token *string; var result *ec2.DescribeSpotPriceHistoryOutput; var err error
+    // Describe historical spot prices for each instance within the past second 
+    for ok := true; ok; ok = (len(*token) > 0) {
+      start := time.Now().Add(-(time.Second  * 1))
+	  end := time.Now()
+      params := &ec2.DescribeSpotPriceHistoryInput{
+        NextToken: token,
+        StartTime: &start,
+        EndTime: &end,
+      }
+      result, err := ec2svc.DescribeSpotPriceHistory(params)
+      if err != nil {
+        log.Fatal(err.Error())
+      }
+
+      log.Debug("Length:", len(result.SpotPriceHistory))
+      log.Debug("DescribeSpotHistory <RESULT>:", result)
+
+      for _, x := range result.SpotPriceHistory {
+        log.Debug("SpotPrice <instance>:", x)
+        var spot_price, _ = strconv.ParseFloat(*x.SpotPrice, 4)
+        e.gaugeVecs["spot_price"].With(prometheus.Labels{
+            "availability_zone": *x.AvailabilityZone,
+            "instance_type": *x.InstanceType,
+            "product_description": *x.ProductDescription,
+        }).Set(float64(spot_price))
+      }
+
+      // Assign next token for continued processing
+      token = result.NextToken
+    }
 
 	return result, err
 
