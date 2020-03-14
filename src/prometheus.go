@@ -37,7 +37,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	e.gatherInstanceMetrics(ch)
 	e.gatherImageMetrics(ch)
 	e.gatherRegionMetrics(ch)
-    e.gatherSpotMetrics(ch)
+	e.gatherSpotMetrics(ch)
 
 	for _, m := range e.gaugeVecs {
 		m.Collect(ch)
