@@ -1,0 +1,4 @@
+exporter_version: 0.1.0
+
+build_images: true
+push_images: true
