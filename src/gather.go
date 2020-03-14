@@ -108,7 +108,7 @@ func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.Desc
 				"hibernation":   strconv.FormatBool(*x.HibernationSupported),
 			}).Set(float64(ebsOnly))
 
-			// network bandwith
+			// network bandwidth
 			re := regexp.MustCompile(`\d[\d,]*[\.]?[\d{2}]*`)
 			netSpeed, _ := strconv.ParseFloat(re.FindString(*x.NetworkInfo.NetworkPerformance), 4)
 			e.gaugeVecs["totalNet"].With(prometheus.Labels{
