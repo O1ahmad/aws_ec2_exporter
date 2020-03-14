@@ -30,7 +30,7 @@ The application can be run in a number of ways, the main consumption is the Dock
 
 Run manually from Docker Hub:
 ```
-podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0Iabs/aws-ec2-exporter
+podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0Iabs/0x01.aws-ec2-exporter
 ```
 
 Scrape non-default AWS EC2 region and increase logging level:
@@ -41,7 +41,7 @@ podman run -d \
            --env REGION=us-west-2 \
            --env LOG_LEVEL=debug \
            --publish 9686:9686 \
-           0Iabs/aws-ec2-exporter
+           0Iabs/0x01.aws-ec2-exporter
 ```
 
 Build a container image:
