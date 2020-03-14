@@ -5,11 +5,14 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// Resets the guageVecs back to 0
+// Resets the guageVecs and counterVecs back to 0
 // Ensures we start from a clean sheet
 func (e *Exporter) resetMetrics() {
 
 	for _, m := range e.gaugeVecs {
+		m.Reset()
+	}
+	for _, m := range e.counterVecs {
 		m.Reset()
 	}
 }
