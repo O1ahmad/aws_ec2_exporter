@@ -5,7 +5,9 @@ services:
 
 before_script:
   - sudo curl -fsSL https://goss.rocks/install | sudo sh
+  - go get -u golang.org/x/lint/golint
 
 script:
+  - golint .
   - docker build --file build/Containerfile --tag aws-ec2-exporter:testing .
   - GOSS_FILES_PATH=test dgoss run aws-ec2-exporter:testing
