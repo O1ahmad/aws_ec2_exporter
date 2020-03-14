@@ -35,8 +35,7 @@ podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX"
 
 Scrape non-default AWS EC2 region and increase logging level:
 ```
-podman run -d \
-           --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
+podman run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
            --env AWS_SECRET_ACCESS_KEY="XXXXXXX" \
            --env REGION=us-west-2 \
            --env LOG_LEVEL=debug \
