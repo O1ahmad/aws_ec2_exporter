@@ -51,7 +51,7 @@ func AddMetrics() (map[string]*prometheus.GaugeVec, map[string]*prometheus.Count
 		Namespace: namespace,
 		Name:      "total_images",
 		Help:      "Total count of publically available images",
-	}, []string{"id", "architecture", "hypervisor", "image_type", "root_device_type", "state", "virtualization_type"})
+	}, []string{"architecture", "hypervisor", "image_type", "root_device_type", "state", "virtualization_type"})
 
   // region metrics
   counterVecs["total_regions"] = prometheus.NewCounterVec(
