@@ -7,5 +7,5 @@ before_script:
   - sudo curl -fsSL https://goss.rocks/install | sudo sh
 
 script:
-  - docker build --file Containerfile --tag aws-ec2-exporter:testing .
+  - docker build --file build/Containerfile --tag aws-ec2-exporter:testing .
   - GOSS_FILES_PATH=test dgoss run aws-ec2-exporter:testing
