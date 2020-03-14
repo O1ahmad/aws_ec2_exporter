@@ -6,8 +6,7 @@ A prometheus exporter providing metrics for AWS EC2 compute resource specificati
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/0x0I/aws_ec2_exporter?color=yellow)
 [![Build Status](https://travis-ci.org/0x0I/aws_ec2_exporter.svg?branch=master)](https://travis-ci.org/0x0I/aws_ec2_exporter)
-[![Go Report Card](https://goreportcard.com/badge/github.com/0x0I/aws_ec2_exporter)](https://goreportcard.com/report/github.com/0x0I/aws_ec2_exporter)
-[![GoDoc](https://godoc.org/github.com/0x0I/aws_ec2_exporter?status.svg)](https://godoc.org/github.com/0x0I/aws_ec2_exporter)
+[![Docker Pulls](https://img.shields.io/docker/pulls/0labs/0x01.aws-ec2-exporter?style=flat)](https://hub.docker.com/repository/docker/0labs/0x01.aws-ec2-exporter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blueviolet.svg)](https://opensource.org/licenses/MIT)
 
 Exposes compute resource statistics of AWS EC2 machine instance-types, images and regions from the AWS EC2 API to a Prometheus compatible endpoint.
