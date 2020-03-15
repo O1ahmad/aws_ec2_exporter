@@ -14,11 +14,11 @@ Exposes compute resource statistics of AWS EC2 machine instance-types, images an
 
 ## Description
 
-The application can be run in a number of ways, the main consumption is the Docker hub image `0x0I/aws-ec2-exporter`.
+The application can be run in a number of ways, the main consumption is the Docker hub image `0x0I.aws-ec2-exporter`.
 
 **Required**
 * `AWS_ACCESS_KEY_ID`      - API access key id of your AWS cloud account
-* `AWS_SECRET_ACCESS_KEY`  - API access key secret of youur AWS cloud account
+* `AWS_SECRET_ACCESS_KEY`  - API access key secret of your AWS cloud account
 
 **Optional**
 * `METRICS_PATH`           - Path under which to expose metrics. Defaults to `/metrics`
