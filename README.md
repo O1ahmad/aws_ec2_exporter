@@ -1,7 +1,7 @@
 <p><img src="https://cdn.worldvectorlogo.com/logos/prometheus.svg" alt="Prometheus logo" title="prometheus" align="left" height="60" /></p>
 <p><img src="https://adamtheautomator.com/content/images/2019/07/prod-art-aws-600-width-1200.png" alt="aws logo" title="aws" align="right" height="100" /></p>
 
-# aws_ec2_exporter
+# AWS EC2 :cloud: Exporter
 A prometheus exporter providing metrics for AWS EC2 compute resource specifications and capacity profiling.
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/0x0I/aws_ec2_exporter?color=yellow)
