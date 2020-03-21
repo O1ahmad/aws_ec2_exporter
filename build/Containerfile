@@ -2,22 +2,21 @@ FROM golang:alpine AS builder
 
 MAINTAINER 0xO1
 
-RUN apk --update add ca-certificates git
+EXPOSE 9686
 
-ADD https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64 /usr/bin/dep
-RUN chmod +x /usr/bin/dep
+RUN apk --update add ca-certificates git && go get github.com/golang/dep/cmd/dep
 
 WORKDIR /go/src/github.com/0x0I/aws_ec2_exporter
-
 COPY Gopkg.toml Gopkg.lock ./
 RUN dep ensure --vendor-only
 
-ADD src/ /go/src/github.com/0x0I/aws_ec2_exporter/
-
-RUN GOPATH=/go go get && GOPATH=/go go build -o /bin/aws_ec2_exporter
+COPY src/ /go/src/github.com/0x0I/aws_ec2_exporter/
+RUN GOPATH=/go go get && GOPATH=/go go build -o /bin/aws-ec2-exporter
 
 FROM alpine:latest
+COPY --from=builder /bin/aws-ec2-exporter /usr/bin/aws-ec2-exporter
+ENTRYPOINT [ "aws-ec2-exporter" ]
 
-COPY --from=builder /bin/aws_ec2_exporter /usr/bin/aws_ec2_exporter
-
-ENTRYPOINT [ "aws_ec2_exporter" ]
+ENV EXPORTER_USER=exporter
+RUN addgroup -S $EXPORTER_USER && adduser --no-create-home --system $EXPORTER_USER $EXPORTER_USER
+USER $EXPORTER_USER
