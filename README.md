@@ -40,7 +40,7 @@ podman run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
            --env REGION=us-west-2 \
            --env LOG_LEVEL=debug \
            --publish 9686:9686 \
-           0Iabs/0x01.aws-ec2-exporter
+           0labs/0x01.aws-ec2-exporter:0.1.0
 ```
 
 Build a container image:
@@ -60,7 +60,7 @@ aws-ec2-exporter:
     - AWS_SECRET_ACCESS_KEY="XXXXXXX"
   expose:
     - 9686:9686
-  image: 0Iabs/aws-ec2-exporter:latest
+  image: 0labs/0x01.aws-ec2-exporter:0.1.0
 ```
 
 ## Metrics
