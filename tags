@@ -1,0 +1,28 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AddMetrics	src/metrics.go	/^func AddMetrics() (map[string]*prometheus.GaugeVec, map[string]*prometheus.CounterVec) {$/;"	d
+CheckConfig	src/config/config.go	/^func CheckConfig() {$/;"	d
+Collect	src/prometheus.go	/^func (e *Exporter) Collect(ch chan<- prometheus.Metric) {$/;"	d
+Describe	src/prometheus.go	/^func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {$/;"	d
+Exporter	src/exporter.go	/^type Exporter struct {$/;"	d
+GetEnv	src/config/config.go	/^func GetEnv(key, fallback string) string {$/;"	d
+ebsOnly	src/gather.go	/^			var ebsOnly = 0$/;"	d
+err	src/gather.go	/^	var err error$/;"	d
+gatherImageMetrics	src/gather.go	/^func (e *Exporter) gatherImageMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeImagesOutput, error) {$/;"	d
+gatherInstanceMetrics	src/gather.go	/^func (e *Exporter) gatherInstanceMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeInstanceTypesOutput, error) {$/;"	d
+gatherRegionMetrics	src/gather.go	/^func (e *Exporter) gatherRegionMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeRegionsOutput, error) {$/;"	d
+gatherSpotMetrics	src/gather.go	/^func (e *Exporter) gatherSpotMetrics(ch chan<- prometheus.Metric) (*ec2.DescribeSpotPriceHistoryOutput, error) {$/;"	d
+hypervisor	src/gather.go	/^			var hypervisor = "unknown"$/;"	d
+main	src/main.go	/^func main() {$/;"	d
+newExporter	src/exporter.go	/^func newExporter() *Exporter {$/;"	d
+resetMetrics	src/prometheus.go	/^func (e *Exporter) resetMetrics() {$/;"	d
+result	src/gather.go	/^	var result *ec2.DescribeInstanceTypesOutput$/;"	d
+result	src/gather.go	/^	var result *ec2.DescribeSpotPriceHistoryOutput$/;"	d
+setLogLevel	src/log.go	/^func setLogLevel(level string) {$/;"	d
+spotPrice	src/gather.go	/^			var spotPrice, _ = strconv.ParseFloat(*x.SpotPrice, 4)$/;"	d
+storageSize	src/gather.go	/^			var storageSize = 0$/;"	d
+token	src/gather.go	/^	var token *string$/;"	d

@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted/
+!_TAG_PROGRAM_AUTHOR	Joel Stemmer	/stemmertech@gmail.com/
+!_TAG_PROGRAM_NAME	gotags
+!_TAG_PROGRAM_URL	https://github.com/jstemmer/gotags
+!_TAG_PROGRAM_VERSION	1.4.1	/go1.12.17/
+AddMetrics	src/metrics.go	6;"	f	access:public	line:6	signature:()	type:map[string]*prometheus.GaugeVec, map[string]*prometheus.CounterVec
+CheckConfig	src/config/config.go	19;"	f	access:public	line:19	signature:()
+Collect	src/prometheus.go	29;"	m	access:public	ctype:Exporter	line:29	signature:(ch chan prometheus.Metric)
+Describe	src/prometheus.go	21;"	m	access:public	ctype:Exporter	line:21	signature:(ch chan *prometheus.Desc)
+Exporter	src/exporter.go	10;"	t	access:public	line:10	type:struct
+GetEnv	src/config/config.go	10;"	f	access:public	line:10	signature:(key, fallback string)	type:string
+config	src/config/config.go	1;"	p	line:1
+counterVecs	src/exporter.go	13;"	w	access:private	ctype:Exporter	line:13	type:map[string]*prometheus.CounterVec
+ec2svc	src/main.go	27;"	v	access:private	line:27
+gatherImageMetrics	src/gather.go	133;"	m	access:private	ctype:Exporter	line:133	signature:(ch chan prometheus.Metric)	type:*ec2.DescribeImagesOutput, error
+gatherInstanceMetrics	src/gather.go	13;"	m	access:private	ctype:Exporter	line:13	signature:(ch chan prometheus.Metric)	type:*ec2.DescribeInstanceTypesOutput, error
+gatherRegionMetrics	src/gather.go	159;"	m	access:private	ctype:Exporter	line:159	signature:(ch chan prometheus.Metric)	type:*ec2.DescribeRegionsOutput, error
+gatherSpotMetrics	src/gather.go	182;"	m	access:private	ctype:Exporter	line:182	signature:(ch chan prometheus.Metric)	type:*ec2.DescribeSpotPriceHistoryOutput, error
+gaugeVecs	src/exporter.go	12;"	w	access:private	ctype:Exporter	line:12	type:map[string]*prometheus.GaugeVec
+github.com/0x0I/aws_ec2_exporter/src/config	src/main.go	6;"	i	line:6
+github.com/Sirupsen/logrus	src/config/config.go	6;"	i	line:6
+github.com/Sirupsen/logrus	src/gather.go	8;"	i	line:8
+github.com/Sirupsen/logrus	src/log.go	3;"	i	line:3
+github.com/Sirupsen/logrus	src/main.go	7;"	i	line:7
+github.com/Sirupsen/logrus	src/prometheus.go	4;"	i	line:4
+github.com/aws/aws-sdk-go/aws	src/main.go	8;"	i	line:8
+github.com/aws/aws-sdk-go/aws/session	src/main.go	9;"	i	line:9
+github.com/aws/aws-sdk-go/service/ec2	src/gather.go	9;"	i	line:9
+github.com/aws/aws-sdk-go/service/ec2	src/main.go	10;"	i	line:10
+github.com/prometheus/client_golang/prometheus	src/exporter.go	6;"	i	line:6
+github.com/prometheus/client_golang/prometheus	src/gather.go	10;"	i	line:10
+github.com/prometheus/client_golang/prometheus	src/main.go	12;"	i	line:12
+github.com/prometheus/client_golang/prometheus	src/metrics.go	3;"	i	line:3
+github.com/prometheus/client_golang/prometheus	src/prometheus.go	5;"	i	line:5
+github.com/prometheus/client_golang/prometheus/promhttp	src/main.go	13;"	i	line:13
+listenPort	src/main.go	23;"	v	access:private	line:23
+logLevel	src/main.go	24;"	v	access:private	line:24
+main	src/exporter.go	1;"	p	line:1
+main	src/gather.go	1;"	p	line:1
+main	src/log.go	1;"	p	line:1
+main	src/main.go	1;"	p	line:1
+main	src/main.go	30;"	f	access:private	line:30	signature:()
+main	src/metrics.go	1;"	p	line:1
+main	src/prometheus.go	1;"	p	line:1
+metricsPath	src/main.go	22;"	v	access:private	line:22
+mutex	src/exporter.go	11;"	w	access:private	ctype:Exporter	line:11	type:sync.RWMutex
+namespace	src/main.go	17;"	c	access:private	line:17
+net/http	src/main.go	4;"	i	line:4
+newExporter	src/exporter.go	17;"	f	access:private	ctype:Exporter	line:17	signature:()	type:*Exporter
+os	src/config/config.go	4;"	i	line:4
+regexp	src/gather.go	4;"	i	line:4
+region	src/main.go	25;"	v	access:private	line:25
+resetMetrics	src/prometheus.go	10;"	m	access:private	ctype:Exporter	line:10	signature:()
+setLogLevel	src/log.go	5;"	f	access:private	line:5	signature:(level string)
+strconv	src/gather.go	5;"	i	line:5
+sync	src/exporter.go	4;"	i	line:4
+time	src/gather.go	6;"	i	line:6
