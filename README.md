@@ -65,4 +65,4 @@ aws-ec2-exporter:
 
 ## Metrics
 
-Metrics will be made available on port 9686 by default, or you can pass environment variable ```LISTEN_ADDRESS``` to override this. An example printout of the metrics you should expect to see can be found in [METRICS.md](https://github.com/0x0I/aws_ec2_exporter/blob/master/METRICS.md).
+Metrics will be made available on port `9686` by default, or you can pass environment variable ```LISTEN_ADDRESS``` to override this. An example printout of the metrics you should expect to see can be found in [METRICS.md](https://github.com/0x0I/aws_ec2_exporter/blob/master/METRICS.md).
