@@ -143,12 +143,14 @@ func (e *Exporter) gatherImageMetrics(ch chan<- prometheus.Metric) (*ec2.Describ
 	for _, x := range result.Images {
 		log.Debug("Data <image>:", x)
 		e.counterVecs["total_images"].With(prometheus.Labels{
+			"name":                *x.Name,
 			"architecture":        *x.Architecture,
 			"hypervisor":          *x.Hypervisor,
 			"image_type":          *x.ImageType,
 			"root_device_type":    *x.RootDeviceType,
 			"state":               *x.State,
 			"virtualization_type": *x.VirtualizationType,
+			"creation_date":       *x.CreationDate,
 		}).Inc()
 	}
 

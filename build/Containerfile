@@ -4,6 +4,8 @@ MAINTAINER 0xO1
 
 EXPOSE 9686
 
+ENV GO111MODULE="off" GOPATH="/go"
+
 RUN apk --update add ca-certificates git && go get github.com/golang/dep/cmd/dep
 
 WORKDIR /go/src/github.com/0x0I/aws_ec2_exporter
@@ -11,7 +13,7 @@ COPY Gopkg.toml Gopkg.lock ./
 RUN dep ensure --vendor-only
 
 COPY src/ /go/src/github.com/0x0I/aws_ec2_exporter/
-RUN GOPATH=/go go get && GOPATH=/go go build -o /bin/aws-ec2-exporter
+RUN  go get && go build -o /bin/aws-ec2-exporter
 
 FROM alpine:latest
 COPY --from=builder /bin/aws-ec2-exporter /usr/bin/aws-ec2-exporter
