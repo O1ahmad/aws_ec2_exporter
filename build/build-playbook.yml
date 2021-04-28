@@ -20,3 +20,13 @@
       command:
         chdir: "{{ playbook_dir.split('/')[0:-1]|join('/') }}"
         cmd: "docker push 0labs/0x01.aws-ec2-exporter:{{ exporter_version }}"
+    - name: Tag release as latest on public Dockerhub repository
+      when: make_latest
+      command:
+        chdir: "{{ playbook_dir.split('/')[0:-1]|join('/') }}"
+        cmd: "docker tag 0labs/0x01.aws-ec2-exporter:{{ exporter_version }} 0labs/0x01.aws-ec2-exporter:latest"
+    - name: Push latest to public Dockerhub repository
+      when: make_latest
+      command:
+        chdir: "{{ playbook_dir.split('/')[0:-1]|join('/') }}"
+        cmd: "docker push 0labs/0x01.aws-ec2-exporter:latest"
