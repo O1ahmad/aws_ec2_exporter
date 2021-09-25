@@ -52,15 +52,18 @@ docker run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX"
 ## Docker compose
 
 ```
-aws-exporter:
-  image: 0labs/0x01.aws-ec2-exporter:latest
-  container_name: aws-exporter
-  environment:
-    AWS_ACCESS_KEY_ID: "AKIATFHDPGV6XD347SEO"
-    AWS_SECRET_ACCESS_KEY: "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"
-    REGION: "us-west-2"
-  ports:
-  - 9686:9686
+version: "3"
+
+services:
+  aws-exporter:
+    image: 0labs/0x01.aws-ec2-exporter:latest
+    container_name: aws-exporter
+    environment:
+      AWS_ACCESS_KEY_ID: "AKIATFHDPGV6XD347SEO"
+      AWS_SECRET_ACCESS_KEY: "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"
+      REGION: "us-west-2"
+    ports:
+    - 9686:9686
 ```
 
 ## Metrics
