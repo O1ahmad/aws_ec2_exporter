@@ -30,12 +30,12 @@ The application can be run in a number of ways, the main consumption is the Dock
 
 Run manually from Docker Hub:
 ```
-podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0labs/0x01.aws-ec2-exporter:<tag>
+docker run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 0labs/0x01.aws-ec2-exporter:<tag>
 ```
 
 Scrape non-default AWS EC2 region and increase logging level:
 ```
-podman run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
+docker run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
            --env AWS_SECRET_ACCESS_KEY="XXXXXXX" \
            --env REGION=us-west-2 \
            --env LOG_LEVEL=debug \
@@ -45,22 +45,22 @@ podman run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
 
 Build a container image:
 ```
-podman build --file build/Containerfile --tag <image-name> .
-podman run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 <image-name>
+docker build --file build/Containerfile --tag <image-name> .
+docker run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 <image-name>
 ```
 
 ## Docker compose
 
 ```
-aws-ec2-exporter:
-  tty: true
-  stdin_open: true
+aws-exporter:
+  image: 0labs/0x01.aws-ec2-exporter:latest
+  container_name: aws-exporter
   environment:
-    - AWS_ACCESS_KEY_ID="XXXXXXXX"
-    - AWS_SECRET_ACCESS_KEY="XXXXXXX"
-  expose:
-    - 9686:9686
-  image: 0labs/0x01.aws-ec2-exporter:<tag>
+    AWS_ACCESS_KEY_ID: "AKIATFHDPGV6XD347SEO"
+    AWS_SECRET_ACCESS_KEY: "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"
+    REGION: "us-west-2"
+  ports:
+  - 9686:9686
 ```
 
 ## Metrics
