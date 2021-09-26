@@ -59,8 +59,8 @@ services:
     image: 0labs/0x01.aws-ec2-exporter:latest
     container_name: aws-exporter
     environment:
-      AWS_ACCESS_KEY_ID: "AKIATFHDPGV6XD347SEO"
-      AWS_SECRET_ACCESS_KEY: "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"
+      AWS_ACCESS_KEY_ID: "XXXXXXXXXXXX"
+      AWS_SECRET_ACCESS_KEY: "XXXXXXXXXXXXXX"
       REGION: "us-west-2"
     ports:
     - 9686:9686
