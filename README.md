@@ -43,7 +43,7 @@ docker run --detach --env AWS_ACCESS_KEY_ID="XXXXXXXX" \
            0labs/0x01.aws-ec2-exporter:<tag>
 ```
 
-Build a container image:
+Build and run a local container image:
 ```
 docker build --file build/Containerfile --tag <image-name> .
 docker run -d -e AWS_ACCESS_KEY_ID="XXXXXXXX" -e AWS_SECRET_ACCESS_KEY="XXXXXXX" -p 9686:9686 <image-name>
