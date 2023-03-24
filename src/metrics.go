@@ -51,7 +51,7 @@ func AddMetrics() (map[string]*prometheus.GaugeVec, map[string]*prometheus.Count
 		prometheus.CounterOpts{
 			Namespace: namespace,
 			Name:      "total_images",
-			Help:      "Total count of publically available images",
+			Help:      "Total count of publicly available images",
 		}, []string{"name", "architecture", "hypervisor", "image_type", "root_device_type", "state", "virtualization_type", "creation_date"})
 
 	// region metrics
@@ -59,7 +59,7 @@ func AddMetrics() (map[string]*prometheus.GaugeVec, map[string]*prometheus.Count
 		prometheus.CounterOpts{
 			Namespace: namespace,
 			Name:      "total_regions",
-			Help:      "Total count of publically accessible EC2 regions",
+			Help:      "Total count of publicly accessible EC2 regions",
 		}, []string{"name", "endpoint", "optin_status"})
 
 	// spot instance metrics
